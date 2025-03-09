@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Category from "../../../models/category/category";
-import Draft from "../../../models/product/draft";
-import CategoriesService from "../../../services/category";
-import { default as productsService } from "../../../services/product";
+import DevelopmentGroup from "../../../models/developmentGroup/developmentGroup";
+import Draft from "../../../models/meeting/draft";
+import CategoriesService from "../../../services/developmentGroup";
+import meetingsService, {
+  default as productsService,
+} from "../../../services/meeting";
 import "./add.css";
+import developmentGroupService from "../../../services/developmentGroup";
 
 export default function Add(): JSX.Element {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [developmentGroup, setDevelopmentGroup] = useState<DevelopmentGroup[]>(
+    []
+  );
 
   const { register, handleSubmit, formState } = useForm<Draft>();
 
   useEffect(() => {
     (async () => {
       try {
-        const categoriesFromService = await CategoriesService.getAll();
-        setCategories(categoriesFromService);
+        const developmentGroupFromService =
+          await developmentGroupService.getAll();
+        setDevelopmentGroup(developmentGroupFromService);
       } catch (e) {
         alert(e);
       }
@@ -24,7 +30,7 @@ export default function Add(): JSX.Element {
 
   async function submit(draft: Draft) {
     try {
-      await productsService.addProduct(draft);
+      await meetingsService.addMeeting(draft);
       alert("added product");
     } catch (e) {
       alert(e);
@@ -34,70 +40,72 @@ export default function Add(): JSX.Element {
   return (
     <div className="Add">
       <form onSubmit={handleSubmit(submit)}>
-        <label>Product Name</label>
+        <label>Meeting Description</label>
         <input
           type="text"
-          placeholder="Product Name"
-          {...register("productName", {
+          placeholder="Meeting Description"
+          {...register("meetingDescription", {
             required: {
               value: true,
-              message: " name product is a must",
+              message: "Meeting Description is a must!",
             },
           })}
         />
-        <span>{formState.errors.productName?.message}</span>
-        <label>price</label>
+        <span>{formState.errors.meetingDescription?.message}</span>
+        <label>Starting Time</label>
+        <input
+          type="datetime-local"
+          {...register("startingDateAndTime", {
+            required: {
+              value: true,
+              message: "Date is a must",
+            },
+          })}
+        />
+        <span>{formState.errors.startingDateAndTime?.message}</span>
+        <label>Ending Time</label>
+        <input
+          type="datetime-local"
+          {...register("endingDateAndTime", {
+            required: {
+              value: true,
+              message: "Ending time is must",
+            },
+          })}
+        />
+        <span>{formState.errors.endingDateAndTime?.message}</span>
+        <label>Meeting Room</label>
         <input
           type="text"
-          placeholder="price"
-          {...register("price", {
+          placeholder="Meeting Room"
+          {...register("meetingRoom", {
             required: {
               value: true,
-              message: "price is a must",
+              message: "Meeting Room is must",
             },
           })}
         />
-        <span>{formState.errors.price?.message}</span>
-        <input
-          type="date"
-          {...register("manufactureTime", {
-            required: {
-              value: true,
-              message: "manufacture time is must",
-            },
-          })}
-        />
-        <span>{formState.errors.manufactureTime?.message}</span>
-        <input
-          type="date"
-          {...register("expirationTime", {
-            required: {
-              value: true,
-              message: "expiration time is must",
-            },
-          })}
-        />
-        <span>{formState.errors.expirationTime?.message}</span>
+        <span>{formState.errors.meetingRoom?.message}</span>
 
         <select
           defaultValue={""}
-          {...register("categoryId", {
+          {...register("developmentGroupId", {
             required: {
               value: true,
-              message: "must pick a category",
+              message: "must pick a Group",
             },
           })}
         >
           <option value="" disabled>
-            choose an category{" "}
+            choose an Group{" "}
           </option>
-          {categories.map(({ id, name }) => (
+          {developmentGroup.map(({ id, name }) => (
             <option key={id} value={id}>
               {name}
             </option>
           ))}
         </select>
-        <button> Add Product</button>
+        <button> Add Meeting</button>
       </form>
     </div>
   );

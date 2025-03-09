@@ -28,7 +28,7 @@ export default class Meeting extends Model {
 
   @AllowNull(false)
   @Column(DataType.DATE)
-  startingDateAndTime: string;
+  startingDateAndTime: Date;
 
   @AllowNull(false)
   @Column(DataType.DATE)
@@ -36,7 +36,7 @@ export default class Meeting extends Model {
 
   @AllowNull(false)
   @Column
-  meetingDescription: Date;
+  meetingDescription: string;
 
   @AllowNull(false)
   @Column

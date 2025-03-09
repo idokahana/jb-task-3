@@ -1,15 +1,32 @@
 .Header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  background-color: #2c3e50;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.Header nav {
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
+nav {
+  display: flex;
+  gap: 20px;
 }
 
-.Header .active {
-    color: green;
+nav a {
+  text-decoration: none;
+  color: #ecf0f1;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+nav .active {
+  background-color: #2980b9;
+  color: white;
 }

@@ -1,0 +1,32 @@
+.List {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.CategoriesSelect {
+  margin-bottom: 20px;
+}
+
+.CategoriesSelect select {
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  color: #333;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.CategoriesSelect select:focus {
+  border-color: #3498db;
+  background-color: #f1f8ff;
+}
+
+.List > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}

@@ -1,20 +1,23 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import Category from "../../../models/category/category";
-import Product from "../../../models/product/product";
-import CategoriesService from "../../../services/category";
-import productsService from "../../../services/product";
+import DevelopmentGroup from "../../../models/developmentGroup/developmentGroup";
+import Meeting from "../../../models/meeting/meeting";
+import developmentGroupService from "../../../services/developmentGroup";
+import meetingsService from "../../../services/meeting";
 import Card from "../card/card";
 import "./List.css";
 
 export default function List(): JSX.Element {
-  const [product, setProduct] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [meeting, setMeeting] = useState<Meeting[]>([]);
+  const [developmentGroup, setDevelopmentGroup] = useState<DevelopmentGroup[]>(
+    []
+  );
 
   useEffect(() => {
     (async () => {
       try {
-        const categoriesFromServies = await CategoriesService.getAll();
-        setCategories(categoriesFromServies);
+        const developmentGroupFromServies =
+          await developmentGroupService.getAll();
+        setDevelopmentGroup(developmentGroupFromServies);
       } catch (e) {
         alert(e);
       }
@@ -22,15 +25,11 @@ export default function List(): JSX.Element {
   }, []);
 
   async function CategoryChanged(event: ChangeEvent<HTMLSelectElement>) {
-    const categoryId = event.currentTarget.value;
-
-    const currentCategory = await productsService.getPerCategory(categoryId);
-
-    setProduct(currentCategory);
-  }
-
-  function deleteMe(id: string) {
-    setProduct(product.filter((p) => p.id !== id));
+    const developmentGroupId = event.currentTarget.value;
+    const currentGroup = await meetingsService.getByDevGroup(
+      developmentGroupId
+    );
+    setMeeting(currentGroup);
   }
 
   return (
@@ -38,9 +37,9 @@ export default function List(): JSX.Element {
       <div className="CategoriesSelect">
         <select onChange={CategoryChanged}>
           <option defaultValue={""} disabled selected>
-            please select job...
+            Select your Group
           </option>
-          {categories.map(({ id, name }) => (
+          {developmentGroup.map(({ id, name }) => (
             <option key={id} value={id}>
               {name}
             </option>
@@ -48,8 +47,8 @@ export default function List(): JSX.Element {
         </select>
       </div>
       <div>
-        {product.map((p) => (
-          <Card product={p} removeProd={deleteMe} key={p.id} />
+        {meeting.map((m) => (
+          <Card meeting={m} key={m.id} />
         ))}
       </div>
     </div>
